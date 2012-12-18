@@ -26,7 +26,7 @@
   height: 300px;
   border: 1px solid #CCC;
 }
-.elist-lists-container .elist-collection-list {
+.elist-lists-container .elist-collection-wrapper {
   margin: 0px;
   padding: 0px;
   width: 245px;
@@ -36,15 +36,11 @@
   display: block;
   list-style: none;
 }
-.elist-lists-container .elist-collection-list.elist-main-collection {
+.elist-lists-container .elist-collection-wrapper.elist-main-collection-wrapper {
   float: right;
 }
-.elist-lists-container .elist-collection-list.elist-subset-collection {
+.elist-lists-container .elist-collection-wrapper.elist-subset-collection-wrapper {
   float: left;
-}
-.elist-lists-container .elist-collection-list li {
-  margin: 0px;
-  padding: 0px;
 }
 
 /* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

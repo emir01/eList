@@ -105,12 +105,12 @@
 
 			$listContainer.addClass("elist-lists-container");
 
-			var $collectionList = ui.list("main");
-			var $subsetList = ui.list("subset");
+			var $collectionListWrapper = ui.listWrapper("main");
+			var $subsetListWrapper = ui.listWrapper("subset");
 
 			// compose the lists 
-			$listContainer.append($subsetList);
-			$listContainer.append($collectionList);
+			$listContainer.append($subsetListWrapper);
+			$listContainer.append($collectionListWrapper);
 
 			$listContainer.append(ui.clear());
 		},
@@ -147,26 +147,26 @@
 		},
 
 		/*
-			Create the list for the initial collection array
+			Create a wrapper around a collection list
 
-			type: The type of collection for which the list
-				  will be created
+			type: The type of collection the wrapper
+				  will be wrapping
 		*/
-		list:function(type){
+		listWrapper:function(type){
 
-			var $list = $("<ul></ul>");
+			var $listWrapper = $("<div></div>");
 
-			$list.addClass("elist-collection-list");
+			$listWrapper.addClass("elist-collection-wrapper");
 
 			if(type === "main"){
-				$list.addClass("elist-main-collection");
+				$listWrapper.addClass("elist-main-collection-wrapper");
 			}
 
 			if(type ==="subset"){
-				$list.addClass("elist-subset-collection");
+				$listWrapper.addClass("elist-subset-collection-wrapper");
 			}
 
-			return $list;
+			return $listWrapper;
 		},
 
 		/*
