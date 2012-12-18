@@ -1,5 +1,59 @@
 /*
 	The main eLikst less source file that contains the stylings for the eList widget
 */
-.elist-lists-container{width:50px;height:50px;background-color:#F00}
+/*
+	The main eLikst less source file that contains the stylings for the eList widget
+*/
+/*
+	Imports:
+*/
+/*
+	===================================================================
+	The variables for the main eList compnents dimensions and colors
+	===================================================================
+*/
+/*
+	DIMENSIONS
+	===================================================================
+*/
+/*
+	COLORS
+	===================================================================
+*//* 
+	Utilities
+*/
+.elist-clear {
+  clear: both;
+}
+/* 
+	Main Widget Components
+*/
+.elist-lists-container {
+  display: block;
+  position: relative;
+  width: 500px;
+  height: 300px;
+  border: 1px solid #CCC;
+}
+.elist-lists-container .elist-collection-list {
+  margin: 0px;
+  padding: 0px;
+  width: 245px;
+  height: 298px;
+  border: 1px solid #666;
+  position: relative;
+  display: block;
+  list-style: none;
+}
+.elist-lists-container .elist-collection-list.elist-main-collection {
+  float: right;
+}
+.elist-lists-container .elist-collection-list.elist-subset-collection {
+  float: left;
+}
+.elist-lists-container .elist-collection-list li {
+  margin: 0px;
+  padding: 0px;
+}
+
 /* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

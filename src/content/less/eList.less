@@ -7,15 +7,55 @@
 	Imports:
 */
 
-@import "mixins.less";
 @import "variables.less";
+
+/* 
+	Utilities
+*/
+
+.elist-clear{
+	clear:both;
+}
 
 /* 
 	Main Widget Components
 */
 
 .elist-lists-container{
-	width:50px;
-	height:50px;
-	background-color:#F00;
+	display:block;
+	position:relative;
+	width:@main-container-width;
+	height:@main-container-height;
+
+	border: 1px solid #CCC;
+
+	// Individual collection list
+
+	.elist-collection-list{
+		margin:0px;
+		padding:0px;
+
+		width: @main-container-width / 2 - 5;
+		height: @main-container-height - 2;
+		border: 1px solid #666;
+
+		position:relative;
+		display:block;
+
+		list-style:none;
+
+		&.elist-main-collection{
+			float:right;
+		}
+
+		&.elist-subset-collection{
+			float:left;
+		}
+
+		// The items under the list
+		li{
+			margin:0px;
+			padding:0px;
+		}
+	}
 }
