@@ -31,7 +31,7 @@
 
 	border: 1px solid #CCC;
 
-	// Individual collection list
+	// Individual collection list wrapper
 
 	.elist-collection-wrapper{
 		margin:0px;
@@ -57,11 +57,15 @@
 		}
 	}
 
+	// Styles for the actual dom ul element containing the data items
 	ul.elist-list{
 		margin:0px;
 		padding:3px;
 
 		list-style:none;
+
+		// The style for the actual li dom element containing the display value for the
+		// data item
 
 		li{
 			margin:0px;
@@ -75,7 +79,53 @@
 			&:last-child{
 				margin-bottom:0px;
 			}
+
+			&:hover{
+				cursor:pointer;
+				background-color:#CCC;
+			}
+		}
+	}
+}
+
+/* 
+	Debug Elements
+*/
+
+// The wrapper dom element that will be used to print any debug/test information
+
+.elist-debug-printWrapper {
+
+	margin-top:10px;
+	margin-left: 10px;
+
+	// The debug/test wrapper dom element containing printed lists with
+	// a name label
+	.printed-list-wrapper {
+		clear:both;
+		// the css for the name of the list
+		.list-name {	
+
 		}
 
+		// the css for the actual debug list
+		.list {
+			ul{
+
+				margin:0px;
+				padding:0px;
+
+				list-style:none;
+
+				li{
+					margin:0px;
+					padding:0px;
+
+					display:block;
+					float:left;
+					margin:5px;
+				}
+			}
+		}
 	}
 }

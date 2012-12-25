@@ -61,3 +61,29 @@
 .elist-lists-container ul.elist-list li:last-child {
   margin-bottom: 0px;
 }
+.elist-lists-container ul.elist-list li:hover {
+  cursor: pointer;
+  background-color: #CCC;
+}
+/* 
+	Debug Elements
+*/
+.elist-debug-printWrapper {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.elist-debug-printWrapper .printed-list-wrapper {
+  clear: both;
+}
+.elist-debug-printWrapper .printed-list-wrapper .list ul {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+.elist-debug-printWrapper .printed-list-wrapper .list ul li {
+  margin: 0px;
+  padding: 0px;
+  display: block;
+  float: left;
+  margin: 5px;
+}

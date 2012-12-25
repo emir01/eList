@@ -7,7 +7,6 @@
 	more integretable with knockout binding.
 */
 
-
 (function($){
 
 	// define the basic jquery plugin
@@ -49,9 +48,9 @@
 	*/
 
 	var defaultInitOptions = {
-		collection: [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15],
+		collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
 
-		subset: [],
+		subset: [1, 4, 6, 2],
 
 		comparisonFunction: function(x, y){
 			return x == y;
@@ -60,7 +59,27 @@
 		namingFunction: function(element){
 			return element;
 		}
-	};	
+	};
+
+	/*
+		A small enumeration object that can be used to distinguish between 
+		the lists that are currently beeing processed by any of the functions in the plugin
+	*/
+
+	var listTypesEnum = {
+		main: "main",
+		subset: "subset"
+	}
+
+	/*
+		Contains all the keys used to store and retrieve data on the dom elements
+		using the jQuery .data() functionality
+	*/
+
+	var dataKeys = {
+		initialCollection:"elist-initialCollection",
+		initialSubset:"elist-initialSubset"
+	};
 
 	/*
 		The initialization namespace for the eList plugin
@@ -83,10 +102,13 @@
 
 			var processedOptions = init.processOptions(options)
 
+			// Make the debug calls to print out the initial passed in lists
+			debug.printCollectionToDom(processedOptions.collection, "Initial Collection objects: ", processedOptions.namingFunction);
+			debug.printCollectionToDom(processedOptions.subset, "Initial Subset objects: ", processedOptions.namingFunction);
+
 			return jqueryObject.each(function(index, element){
 				// initialize the container
 				init.initContainer(element, processedOptions);
-
 			});
 		},
 
@@ -108,17 +130,23 @@
 
 			// Create and process the list wrappers
 
-			var $collectionListWrapper = ui.listWrapper("main");
-			var $subsetListWrapper = ui.listWrapper("subset");
+			var $collectionListWrapper = ui.listWrapper(listTypesEnum.main);
+			var $subsetListWrapper = ui.listWrapper(listTypesEnum.subset);
 
-			init.processList($collectionListWrapper, options.collection, options.namingFunction);
-			init.processList($subsetListWrapper, options.subset, options.namingFunction);
+			//  we are going to set the initial collections as data elements on the 
+			// list wrappers which will be used throught the initialization process
+			// and later on in the several plugin functions
+			$collectionListWrapper.data();
 
-			// compose the list container elements
+			// Do the major processing and UI for each of the seperate collection lists
+			init.processListUI($collectionListWrapper, options, listTypesEnum.main);
+			init.processListUI($subsetListWrapper, options, listTypesEnum.subset);
 
+			
+			// add the lists to the wrapper element for the given container
+			// displayed on the actual UI
 			$listContainer.append($subsetListWrapper);
 			$listContainer.append($collectionListWrapper);
-
 
 			$listContainer.append(ui.clear());
 		},
@@ -139,16 +167,36 @@
 		},
 
 		/*
-			Process a list wrapper for the given list collection and adds all the initial list elements
+			Process a list wrapper for the given list collection and adds all the initial list elements.
 
-			wrapper:        The list wrapper element that wraps around a single ui for a given collection.
-			collection:     The actual collection object containing the data.
-			namingFunction: The function that we can use to extract the display name for any given data item.
+			wrapper:   The list wrapper element that wraps around a single ui for a given collection.
 
+			options:   The options object passed for the initialization. Will be used to get to the actual collection
+					   that is being processed as well if necessary to aditional initialization functions
+
+			whichList: Flag that tells us which list we are currently processing.
 		*/ 
-		processList: function(wrapper, collection, namingFunction){
+
+		processListUI: function(wrapper, options, whichList){
 			// get the ul element
 			var $ul = ui.list();
+
+			var collection = [];
+
+			// Get the list we are actually currently processing from the options
+			if(whichList === listTypesEnum.main){
+				collection = options.collection;
+			} else{
+				collection = options.subset;
+			}
+
+			if(whichList === listTypesEnum.main){
+				collection = utility.getExclusionList(options.collection, options.subset, options.comparisonFunction);
+			}
+
+			// get the naming function used to extract
+			// the simple html display string for the items
+			var namingFunction = options.namingFunction;
 
 			for(var i = 0; i < collection.length; i++){
 				var dataItem = collection[i];
@@ -162,7 +210,7 @@
 
 			// after adding all the items we are going to add the list item to the wrapper
 			wrapper.append($ul);
-		}
+		},
 	};
 
 	/*
@@ -193,11 +241,11 @@
 
 			$listWrapper.addClass("elist-collection-wrapper");
 
-			if(type === "main"){
+			if(type === listTypesEnum.main){
 				$listWrapper.addClass("elist-main-collection-wrapper");
 			}
 
-			if(type ==="subset"){
+			if(type === listTypesEnum.subset){
 				$listWrapper.addClass("elist-subset-collection-wrapper");
 			}
 
@@ -207,6 +255,7 @@
 		/*
 			Create an UL list container element to be used as the list for the collections
 		*/ 
+
 		list:function(){
 			var $list = $("<ul></ul>");
 
@@ -246,6 +295,126 @@
 
 	var utility = {
 
+		/*
+			Function that returns the first list without the data items that are in the 
+			second list based on provided comparison function.
+
+			originalList:  The list that will be processed and returned without the items 
+						   that are in the exclusionList
+
+		    exclusionList: The list containing the items that will be removed from the original list
+		    			   based on the equality comparison function
+
+		    equalityComparison : The equality comparison function is used to determine if two data item
+		    					  objects are equal
+	    */
+		getExclusionList: function(originalList, exclusionList, equalityComparison){
+			var filteredCollection = [];
+
+			for (var i = originalList.length - 1; i >= 0; i--) {
+				var item = originalList[i];
+				var itemIsPresentInExclusionList = false;
+
+				/*
+					For each item in the original list we are going to iterate
+					through the exclusion list and try compare those data items
+					using the equality comparion function. If the item is found it 
+					will not be added in the filtered collectoin
+				*/
+
+				for (var j = exclusionList.length - 1; j >= 0; j--) {
+					var exclusionListItem = exclusionList[j];
+
+					var itemsAreEqual = equalityComparison(item, exclusionListItem);
+
+					if(itemsAreEqual){
+						itemIsPresentInExclusionList = true;
+						break;
+					}
+				};
+
+				if(!itemIsPresentInExclusionList){
+					filteredCollection.push(item);
+				}
+			}
+
+			var originalOrderCollection = [];
+
+			// before returning the filtered collection reverse it
+			// so we get the original item order
+			for (var k = filteredCollection.length - 1; k >= 0; k--) {
+				var item = filteredCollection[k];
+				originalOrderCollection.push(item);
+			};
+
+			return originalOrderCollection;
+		}
+	};
+
+	/*
+		Debug and test related functionality
+		=========================================================================
+	*/
+
+	var debug = {
+		/*
+			Print a object collection to the dom using the provided dispay function.
+			Can be used to print out the initialization collection to the dom for testing
+			and debug purposes
+
+			collection: The collection that will be displayed on the dom.
+			name : The name for the given collection we are going to print
+			displayFunction: The function used to get the display string for each of the data items in the collection
+		*/
+		printCollectionToDom: function(collection, name, displayFunction){
+
+			// Make sure the dom has the element used to print dom debug information
+			var $domPrintWrapper = $(".elist-debug-printWrapper");
+
+			// if there is no such wrapper we are going to add it to the dom
+			if($domPrintWrapper.size() === 0){
+				// we are going to create the dom print wrapper where we can print the lists
+				var $printDebugWrapper = $("<div></div>").addClass("elist-debug-printWrapper");
+				$("body").append($printDebugWrapper);
+
+				// redo the selection
+				$domPrintWrapper = $(".elist-debug-printWrapper");
+			}
+
+			// create the individual list dom element wrapper
+			var $listWrapper = $("<div></div>").addClass("printed-list-wrapper");
+
+			// create the label for the name of the list and the collection wrapper
+			var $label = $("<div></div>").addClass("list-name");
+			
+			var $list = $("<div></div>").addClass("list");
+			
+
+			// set the values for the elements
+			$label.html(name);
+
+			// add the items one by one to the debug list wrapper
+			// we are going to use a debug ul dom element
+			
+			var $ul = $("<ul></ul>");
+			$list.append($ul);
+
+			var listSize = collection.length;
+			for (var i = 0; i < listSize; i++) {
+				var dataItem = collection[i];
+				var displayValue = displayFunction(dataItem);
+
+				var $li = $("<li></li>");
+				$li.html(displayValue);
+
+				$ul.append($li);
+			};
+
+			// compose the elements
+			$listWrapper.append($label);
+			$listWrapper.append($list);
+			$domPrintWrapper.append($listWrapper)
+		}
 	};
 
 })(jQuery);
