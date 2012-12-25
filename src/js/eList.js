@@ -49,7 +49,7 @@
 	*/
 
 	var defaultInitOptions = {
-		collection: [1, 2, 3, 4],
+		collection: [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15],
 
 		subset: [],
 
@@ -101,16 +101,24 @@
 		*/
 
 		initContainer:function(containerElement, options) {
+			var init = this;
 			var $listContainer = $(containerElement);
 
 			$listContainer.addClass("elist-lists-container");
 
+			// Create and process the list wrappers
+
 			var $collectionListWrapper = ui.listWrapper("main");
 			var $subsetListWrapper = ui.listWrapper("subset");
 
-			// compose the lists 
+			init.processList($collectionListWrapper, options.collection, options.namingFunction);
+			init.processList($subsetListWrapper, options.subset, options.namingFunction);
+
+			// compose the list container elements
+
 			$listContainer.append($subsetListWrapper);
 			$listContainer.append($collectionListWrapper);
+
 
 			$listContainer.append(ui.clear());
 		},
@@ -128,6 +136,32 @@
 
 			var extendedOptions = $.extend(defaultInitOptions, options);
 			return extendedOptions;
+		},
+
+		/*
+			Process a list wrapper for the given list collection and adds all the initial list elements
+
+			wrapper:        The list wrapper element that wraps around a single ui for a given collection.
+			collection:     The actual collection object containing the data.
+			namingFunction: The function that we can use to extract the display name for any given data item.
+
+		*/ 
+		processList: function(wrapper, collection, namingFunction){
+			// get the ul element
+			var $ul = ui.list();
+
+			for(var i = 0; i < collection.length; i++){
+				var dataItem = collection[i];
+				var dataItemDisplayName = namingFunction(dataItem);
+
+				var $listItem = ui.item(dataItemDisplayName);
+
+				// add the list item to the ul
+				$ul.append($listItem);
+			}
+
+			// after adding all the items we are going to add the list item to the wrapper
+			wrapper.append($ul);
 		}
 	};
 
@@ -143,6 +177,7 @@
 			Create the list manager toolbar item
 		*/
 		toolbar:function(){
+
 
 		},
 
@@ -170,11 +205,26 @@
 		},
 
 		/*
+			Create an UL list container element to be used as the list for the collections
+		*/ 
+		list:function(){
+			var $list = $("<ul></ul>");
+
+			$list.addClass("elist-list");
+			return $list;
+		},
+
+		/*
 			 Create a single list item
+
+			 itemDisplayValue: The data display value for a given data item.
 		*/
 
-		item:function(){
+		item:function(itemDisplayValue){
+			var $listItem = $("<li></li>");
+			$listItem.html(itemDisplayValue);
 
+			return $listItem;
 		},
 
 		/*

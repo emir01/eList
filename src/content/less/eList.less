@@ -8,6 +8,7 @@
 */
 
 @import "variables.less";
+@import "mixins.less";
 
 /* 
 	Utilities
@@ -22,6 +23,7 @@
 */
 
 .elist-lists-container{
+	.font();
 	display:block;
 	position:relative;
 	width:@main-container-width;
@@ -44,6 +46,8 @@
 
 		list-style:none;
 
+		overflow-y:auto;
+
 		&.elist-main-collection-wrapper{
 			float:right;
 		}
@@ -51,5 +55,27 @@
 		&.elist-subset-collection-wrapper{
 			float:left;
 		}
+	}
+
+	ul.elist-list{
+		margin:0px;
+		padding:3px;
+
+		list-style:none;
+
+		li{
+			margin:0px;
+			margin-bottom:3px;
+
+			padding:3px;
+
+			font-size:13px;
+			border:1px solid #CCC;
+
+			&:last-child{
+				margin-bottom:0px;
+			}
+		}
+
 	}
 }
