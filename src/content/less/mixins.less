@@ -1,5 +1,14 @@
+// general font mixin used to modify dom element fonts
 .font(){
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: normal;
 	letter-spacing: 1px;
+}
+
+// general icon mixing used to set an icon as the background image for a given element
+.icon(@icon-name){
+	@icon-path:"@{icons-general-path}/@{icon-name}";
+	background-image:url('@{icon-path}');
+	background-repeat:no-repeat;
+	background-position: center center;
 }

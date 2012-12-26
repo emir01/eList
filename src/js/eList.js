@@ -154,6 +154,9 @@
 		/*
 			Process the options object and  extend with default
 			options.
+
+			options: The options object that we are going to process and extend with default plugin
+					 defined options.
 		*/
 
 		processOptions: function(options){
@@ -256,7 +259,7 @@
 			Create an UL list container element to be used as the list for the collections
 		*/ 
 
-		list:function(){
+		list: function(){
 			var $list = $("<ul></ul>");
 
 			$list.addClass("elist-list");
@@ -267,11 +270,28 @@
 			 Create a single list item
 
 			 itemDisplayValue: The data display value for a given data item.
-		*/
+			 whichList: To which initial list will the item belong to.
+			 */
 
-		item:function(itemDisplayValue){
+		item: function(itemDisplayValue, whichList){
 			var $listItem = $("<li></li>");
-			$listItem.html(itemDisplayValue);
+
+			// crete the elements that will store the display text/html
+			// and the icons used to change list composition
+
+			var $displayContainer = $("<div></div>").addClass("item-display-wrapper");
+			var $iconContainer = $("<div></div>").addClass("item-icon-wrapper");;
+
+			// compose the value display and icon elements
+			$displayContainer.html(itemDisplayValue);
+			$listItem.append($displayContainer);
+
+			$listItem.append($iconContainer);
+
+			// because we are going to probably use floats
+			// we are going to append a clear div to the li dom element
+
+			$listItem.append(this.clear());
 
 			return $listItem;
 		},
@@ -395,7 +415,7 @@
 
 			// add the items one by one to the debug list wrapper
 			// we are going to use a debug ul dom element
-			
+
 			var $ul = $("<ul></ul>");
 			$list.append($ul);
 

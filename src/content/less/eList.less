@@ -50,10 +50,22 @@
 
 		&.elist-main-collection-wrapper{
 			float:right;
+
+			// based on which list we are we
+			// are overiding the icon on the transfer button
+			.item-icon-wrapper {
+				.icon("plus_small.png");
+			}
 		}
 
 		&.elist-subset-collection-wrapper{
 			float:left;
+
+			// based on which list we are we
+			// are overiding the icon on the transfer button
+			.item-icon-wrapper {
+				.icon("minus_small.png");
+			}
 		}
 	}
 
@@ -83,6 +95,20 @@
 			&:hover{
 				cursor:pointer;
 				background-color:#CCC;
+			}
+
+			.item-display-wrapper {
+				float:left;
+			}
+
+			.item-icon-wrapper {
+				width:15px;
+				height:15px;
+
+				border:1px solid #333;
+
+				position:relative;
+				float:right
 			}
 		}
 	}

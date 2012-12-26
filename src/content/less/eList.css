@@ -9,6 +9,21 @@
 */
 /*
 	Layout and Color variables for the E-List jquery plugin
+	========================================================================
+
+	General dimension and color variables used throughout the plugin
+*/
+/*
+	Icon Variables
+	========================================================================
+
+	Variables for Icon names for certain dom element
+*/
+/*
+	Path Variables
+	========================================================================
+
+	Variables for content path properties
 */
 /* 
 	Utilities
@@ -43,8 +58,18 @@
 .elist-lists-container .elist-collection-wrapper.elist-main-collection-wrapper {
   float: right;
 }
+.elist-lists-container .elist-collection-wrapper.elist-main-collection-wrapper .item-icon-wrapper {
+  background-image: url('../images/icons/plus_small.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .elist-lists-container .elist-collection-wrapper.elist-subset-collection-wrapper {
   float: left;
+}
+.elist-lists-container .elist-collection-wrapper.elist-subset-collection-wrapper .item-icon-wrapper {
+  background-image: url('../images/icons/minus_small.png');
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 .elist-lists-container ul.elist-list {
   margin: 0px;
@@ -64,6 +89,16 @@
 .elist-lists-container ul.elist-list li:hover {
   cursor: pointer;
   background-color: #CCC;
+}
+.elist-lists-container ul.elist-list li .item-display-wrapper {
+  float: left;
+}
+.elist-lists-container ul.elist-list li .item-icon-wrapper {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #333;
+  position: relative;
+  float: right;
 }
 /* 
 	Debug Elements
